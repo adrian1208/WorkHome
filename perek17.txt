@@ -1,0 +1,101 @@
+17
+
+1--
+USE [eDate]
+GO
+
+CREATE TABLE [Lists].[Countries] ADD  CONSTRAINT [pk_Countries_c_Id] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF,  
+IGNORE_DUP_KEY = OFF,  ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+
+CREATE INDEX [pk_Countries_c_Id] ON [Lists].[Countries] REBUILD PARTITION = ALL WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF,
+ SORT_IN_TEMPDB = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100)
+
+GO
+
+2--
+
+
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20181227-143222] ON [Lists].[Countries]
+(
+	[Name] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF,
+ ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]
+
+GO
+
+4--
+ALTER TABLE [Operation].[MemberSessions]
+ADD CONSTRAINT PK_TransactionHistoryArchive_TransactionID PRIMARY KEY  NONCLUSTERED ([Id])
+ WITH (FILLFACTOR = 80); 
+GO  
+
+5--
+USE [eDate]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [Operation].[MemberSearch](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SessionId] [int] NOT NULL,
+	[DateAndTime] [datetime2](0) NOT NULL,
+	SearchCriteria [XML] NOT NULL,
+	[SearchResultCount] [int] NOT NULL,
+
+ CONSTRAINT [PK_TransactionHistoryArchive_TransactionID] PRIMARY KEY NONCLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+6--
+ALTER TABLE [Operation].[Members]
+ADD CHECK (DATEDIFF(yy, M.BirthDate, GETDATE()) > 17)
+
+7--
+
+insert into  [Operation].[Members]
+([Username],[Password],[FirstName],[LastName],[CountryId],[EmailAddress],[GenderId],[BirthDate])
+values
+(      
+      'Adrian1'
+      ,'12342'
+      ,'Juan'
+      ,'Lpez'
+     
+      ,3
+     
+      ,'xxx@gmail.com'
+      ,2
+      ,'2017-7-22'
+     
+ )
+ select * from [Operation].[Members]
+
+8--
+CREATE TABLE [Operation].[Members] ADD  CONSTRAINT [pk_Members_c_Id] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF
+, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100) ON [PRIMARY]
+GO
+
+9--
+
+
+
+
+
+
+
+
+

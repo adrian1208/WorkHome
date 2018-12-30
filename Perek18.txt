@@ -1,0 +1,59 @@
+Perek 18
+
+1--
+
+ALTER TABLE [dbo].[Orders]
+  ADD CONSTRAINT uq_yourtablename UNIQUE([CustomerID],[OrderDate] );
+
+2
+ALTER TABLE Persons
+ADD CHECK (Age>=18);
+
+
+3--
+
+CREATETABLE [dbo].[Orders]
+ADD CHECK ([RequiredDate] >[OrderDate])
+
+4--
+CREATE TABLE [dbo].[ValidateWorker](
+	[EmployeeID] [int] NOT NULL,
+	[EnterTime] [datetime] NOT NULL,
+	[DoorNumber] [int] NOT NULL,
+ CONSTRAINT [PK_ValidateWorker] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[ValidateWorker] ADD  DEFAULT (getdate()) FOR [EnterTime]
+GO
+
+ALTER TABLE [dbo].[ValidateWorker]  WITH CHECK ADD  CONSTRAINT [FK_ValidateWorker_DOORS] FOREIGN KEY([DoorNumber])
+REFERENCES [dbo].[DOORS] ([DoorNumber])
+GO
+
+ALTER TABLE [dbo].[ValidateWorker] CHECK CONSTRAINT [FK_ValidateWorker_DOORS]
+GO
+
+ALTER TABLE [dbo].[ValidateWorker]  WITH CHECK ADD  CONSTRAINT [FK_ValidateWorker_Employees] FOREIGN KEY([EmployeeID])
+REFERENCES [dbo].[Employees] ([EmployeeID])
+GO
+
+ALTER TABLE [dbo].[ValidateWorker] CHECK CONSTRAINT [FK_ValidateWorker_Employees]
+GO
+
+
+
+CREATE TABLE [dbo].[DOORS](
+	[DoorNumber] [int] NOT NULL,
+	[DoorDescription] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_DOORS] PRIMARY KEY CLUSTERED 
+(
+	[DoorNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

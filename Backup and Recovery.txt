@@ -1,0 +1,123 @@
+1--
+
+BACKUP DATABASE [eDate] TO  DISK = N'C:\CourseMateials\Edate.bak' WITH NOFORMAT, INIT,  NAME = N'eDate-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10, CHECKSUM
+GO
+declare @backupSetId as int
+select @backupSetId = position from msdb..backupset where database_name=N'eDate' and backup_set_id=(select max(backup_set_id) from msdb..backupset where database_name=N'eDate' )
+if @backupSetId is null begin raiserror(N'Verify failed. Backup information for database ''eDate'' not found.', 16, 1) end
+RESTORE VERIFYONLY FROM  DISK = N'C:\CourseMateials\Edate.bak' WITH  FILE = @backupSetId,  NOUNLOAD,  NOREWIND
+GO
+
+2--
+
+ insert    into  [Operation].[Members] 
+  ( 
+      [Username]
+      ,[Password]
+      ,[FirstName]
+      ,[LastName]
+      ,[StreetAddress]
+      ,[CountryId]
+      ,[PhoneNumber]
+      ,[EmailAddress]
+      ,[GenderId]
+    
+      ,[SexualPreferenceId]
+      ,[MaritalStatusId]
+      ,[Picture])
+     
+	  values (
+	'Juan',	603186	,'Bryan'	,'Taylor',	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',	3	,
+1234567890	,'xxxx@gmail.com'	,1	,	2,	NULL,	0x5000690063007400750072006500  )
+
+
+3--
+BACKUP DATABASE [eDate] TO  DISK = N'C:\CourseMateials\Edate.bak' WITH  DIFFERENTIAL , NOFORMAT, NOINIT,  NAME = N'eDate-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
+GO
+
+4--
+
+  insert    into  [Operation].[Members] 
+  ( 
+      [Username]
+      ,[Password]
+      ,[FirstName]
+      ,[LastName]
+      ,[StreetAddress]
+      ,[CountryId]
+      ,[PhoneNumber]
+      ,[EmailAddress]
+      ,[GenderId]
+    
+      ,[SexualPreferenceId]
+      ,[MaritalStatusId]
+      ,[Picture])
+     
+	  values (
+	'Carlos',	603186	,'Bryan'	,'Gomez',	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',	3	,
+1234567890	,'xxxx@gmail.com'	,1	,	2,	NULL,	0x5000690063007400750072006500  )
+
+5--
+BACKUP LOG [eDate] TO  DISK = N'C:\CourseMateials\edate.trn' WITH NOFORMAT, NOINIT, 
+ NAME = N'eDate-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
+GO
+
+6--
+  insert    into  [Operation].[Members] 
+  ( 
+      [Username]
+      ,[Password]
+      ,[FirstName]
+      ,[LastName]
+      ,[StreetAddress]
+      ,[CountryId]
+      ,[PhoneNumber]
+      ,[EmailAddress]
+      ,[GenderId]
+    
+      ,[SexualPreferenceId]
+      ,[MaritalStatusId]
+      ,[Picture])
+     
+	  values (
+	'Enrique',	603186	,'Tom'	,'Gomez',	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',	3	,
+1234567890	,'xxxx@gmail.com'	,1	,	2,	NULL,	0x5000690063007400750072006500  )
+
+
+
+7--
+
+USE [master]
+BACKUP LOG [eDate] TO  DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Backup\eDate_LogBackup_2018-12-16_07-46-44.bak
+' WITH NOFORMAT, NOINIT,  NAME = N'eDate_LogBackup_2018-12-16_07-46-44', NOSKIP, NOREWIND, NOUNLOAD,  NORECOVERY ,  STATS = 5
+RESTORE DATABASE [eDate] FROM  DISK = N'C:\sqlData\Edate.BAK' WITH  FILE = 1,  NOUNLOAD,  REPLACE,  STATS = 5
+
+GO
+
+9--
+USE [master]
+BACKUP LOG [eDate] TO  DISK = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Backup\eDate_LogBackup_2018-12-16_07-48-49.bak
+' WITH NOFORMAT, NOINIT,  NAME = N'eDate_LogBackup_2018-12-16_07-48-49', NOSKIP, NOREWIND, NOUNLOAD,  NORECOVERY ,  STATS = 5
+RESTORE DATABASE [eDate] FROM  DISK = N'C:\sqlData\Edate.BAK' WITH  FILE = 1,  NORECOVERY,  NOUNLOAD,  STATS = 5
+RESTORE DATABASE [eDate] FROM  DISK = N'C:\sqlData\Edate.BAK' WITH  FILE = 2, 
+ STANDBY = N'C:\Program Files\Microsoft SQL Server\MSSQL13.MSSQLSERVER\MSSQL\Backup\eDate_RollbackUndo_2018-12-16_07-49-09.bak',  NOUNLOAD,  STATS = 5
+
+GO
+
+
+15--
+BACKUP DATABASE [eDate] TO  DISK = N'C:\sqlData\Edate.BAK',  
+DISK = N'C:\DRIVERS\edate.bak' WITH NOFORMAT, NOINIT,  NAME = 
+N'eDate-Full Database Backup', SKIP, NOREWIND, NOUNLOAD,  STATS = 10
+GO
+
+15--
+
+
+
+
+
+
+
+
+

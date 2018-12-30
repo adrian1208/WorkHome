@@ -1,0 +1,120 @@
+1--
+Create view [Operation.SomeInvitations]
+as
+SELECT [Id]
+      ,[RequestingSessionId]
+      ,[ReceivingMemberId]
+      ,[CreationDateTime]
+      ,[StatusId]
+     , [ResponseDateTime]
+  FROM [eDate].[Operation].[Invitations]
+  where statusid = 3
+
+1b--
+
+-- 
+ insert into [Operation.SomeInvitations]
+     (    
+      [RequestingSessionId]
+      ,[ReceivingMemberId]
+      ,[CreationDateTime]
+      ,[StatusId]
+      ,[ResponseDateTime])
+	  values (54444,8477,'2017.02.10' ,3,'2017.04.10')
+
+  select * from [Operation.SomeInvitations]
+
+1c--
+alter view [Operation.SomeInvitations]
+as
+SELECT [Id]
+      ,[RequestingSessionId]
+      ,[ReceivingMemberId]
+      ,[CreationDateTime]
+      ,[StatusId]
+      
+  FROM [eDate].[Operation].[Invitations]
+  where statusid = 3
+ 
+
+1f--
+
+alter view [Operation.SomeInvitations]
+as
+SELECT [Id]
+      ,[RequestingSessionId]
+     
+      ,[CreationDateTime]
+      ,[StatusId]
+      
+  FROM [eDate].[Operation].[Invitations]
+ 
+
+1h--
+
+alter view [Operation.SomeInvitations]
+as
+SELECT [Id]
+      ,[RequestingSessionId]
+      ,[ReceivingMemberId]
+      ,[CreationDateTime]
+      ,[StatusId]
+      
+  FROM [eDate].[Operation].[Invitations]
+
+1n--
+CREATE view [Operation].[MemberSessionsView]
+as
+SELECT [Id]
+      ,[MemberId]
+      ,[LoginDateTime]
+      ,[EndDateTime]
+      ,[EndReasonId]
+  FROM [eDate].[Operation].[MemberSessions]
+GO
+
+
+1o--
+
+
+CREATE view [Operation].[LastMonthSession]
+as
+SELECT [Id]
+      ,[MemberId]
+      ,[LoginDateTime]
+      ,[EndDateTime]
+      ,[EndReasonId]
+  FROM [eDate].[Operation].[MemberSessions]
+  where LoginDateTime= DATEADD(day, -30, getdate())
+GO
+
+select * from [Operation].[MemberSessionsView]
+
+
+1p--
+CREATE view [dbo].[Operation.singlemembersession]
+as
+SELECT O.[Id],O.[MemberId],[LoginDateTime],[EndDateTime],[EndReasonId]
+  FROM [eDate].[Operation].[MemberSessions] O inner join
+[Operation].[Members] M on o.Id = M.Id
+  where m.MaritalStatusId = 1
+GO
+
+1s--
+
+CREATE view Operation.FemaleItalianMembers
+as
+SELECT [Id] ,[FirstName],[LastName],[CountryId] ,[RegistrationDateTime]
+  FROM [eDate].[Operation].[Members] 
+  where [CountryId] = 5 and  [GenderId]  =2
+
+T--
+
+SELECT        Operation.Members.FirstName, Operation.Members.LastName, Operation.MemberSessions.LoginDateTime, Operation.MemberSessions.Id AS Expr1, Operation.MemberSessions.MemberId
+FROM            Operation.Members INNER JOIN
+                         Operation.MemberSessions ON Operation.Members.Id = Operation.MemberSessions.MemberId
+WHERE        (Operation.Members.CountryId = 5) AND (Operation.Members.GenderId = 2)
+
+
+
+
