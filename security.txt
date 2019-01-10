@@ -1,0 +1,214 @@
+2--
+
+USE [master]
+GO
+CREATE LOGIN [test] WITH PASSWORD=N'Shamir1234', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+GO
+USE [Northwind]
+GO
+CREATE USER [test] FOR LOGIN [test]
+GO
+use [master]
+GO
+GRANT CONNECT SQL TO [test]
+GO
+
+---------------------------------------------------------------------
+create view TestView
+as
+SELECT [ProductID]
+      ,[ProductName]
+      ,[UnitPrice]
+      
+  FROM [Northwind].[dbo].[Products]
+
+-------------------------------------------------
+
+
+use [Northwind]
+GO
+GRANT CONTROL ON [dbo].[TestView] TO [Test1]
+GO
+-------------------------------------------
+
+3--
+USE [master]
+GO
+CREATE LOGIN [ADD!] WITH PASSWORD=N'Shamir123', DEFAULT_DATABASE=[master], CHECK_EXPIRATION=OFF, CHECK_POLICY=ON
+GO
+ALTER SERVER ROLE [diskadmin] ADD MEMBER [ADD]
+GO
+use [eDate]
+
+GO
+use [msdb]
+
+GO
+USE [eDate]
+GO
+CREATE USER [ADD!] FOR LOGIN [ADD]
+GO
+use [Movies]
+
+GO
+use [eDate]
+
+GO
+USE [Movies]
+GO
+CREATE USER [ADD!] FOR LOGIN [ADD]
+GO
+use [msdb]
+
+GO
+use [Movies]
+
+GO
+USE [msdb]
+GO
+CREATE USER [ADD!] FOR LOGIN [ADD]
+GO
+USE [msdb]
+GO
+ALTER ROLE [db_backupoperator] ADD MEMBER [ADD]
+GO
+
+
+USE [Movies]
+GO
+CREATE USER [ADD] FOR LOGIN [AD]
+GO
+USE [Movies]
+GO
+ALTER AUTHORIZATION ON SCHEMA::[db_backupoperator] TO [ADD]
+GO
+USE [Movies]
+GO
+ALTER ROLE [db_backupoperator] ADD MEMBER [ADD]
+GO
+use [ColumnStoreDB]
+GO
+GRANT BACKUP DATABASE TO [ADD]
+GO
+use [ColumnStoreDB]
+GO
+GRANT BACKUP LOG TO [ADD]
+GO
+
+-----------------------------------------------------------------------
+
+5--
+USE [master]
+GO
+CREATE LOGIN [BOB] WITH PASSWORD=N'Shamir1234', DEFAULT_DATABASE=[eDate], CHECK_EXPIRATION=OFF, CHECK_POLICY=ON
+GO
+USE [eDate]
+GO
+CREATE USER [BOB] FOR LOGIN [BOB]
+GO
+
+6--
+
+USE [eDate]
+GO
+CREATE USER [BOB] FOR LOGIN [BOB]
+GO
+
+7--
+i can connect because i create it on mixed mode
+----------------------------------------------
+
+8--
+changed on creation
+---------------------------------------
+9--
+
+connected
+
+-----------------------------------------------
+
+10.
+can't read from the table
+
+----------------------------------------
+11.
+USE [eDate]
+GO
+CREATE ROLE [BOBS] AUTHORIZATION [BOB]
+GO
+use [eDate]
+GO
+GRANT DELETE ON [dbo].[checkfillfactor] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT INSERT ON [dbo].[checkfillfactor] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT SELECT ON [dbo].[checkfillfactor] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT UPDATE ON [dbo].[checkfillfactor] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT DELETE ON [Operation].[Members] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT INSERT ON [Operation].[Members] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT SELECT ON [Operation].[Members] TO [BOBS]
+GO
+use [eDate]
+GO
+GRANT UPDATE ON [Operation].[Members] TO [BOBS]
+GO
+
+-------------------------------------------------
+
+12.
+
+
+USE [eDate]
+GO
+ALTER AUTHORIZATION ON ROLE::[BOBS] TO [BOB]
+GO
+
+-----------------------------------------------------
+
+13.
+
+Can read now after adding it to role
+---------------------------------------------------
+
+14.
+
+use [eDate]
+GO
+DENY CONTROL ON [Operation].[Members] TO [BOB]
+GO
+
+----------------------------------------
+
+15
+can't read from it after applying deny permition
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
